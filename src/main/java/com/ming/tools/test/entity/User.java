@@ -1,13 +1,13 @@
 package com.ming.tools.test.entity;
 
-import com.ming.tools.generate.annotation.Column;
-import com.ming.tools.generate.annotation.Comment;
-import com.ming.tools.generate.annotation.Description;
-import com.ming.tools.generate.annotation.GenerateMybatis;
-import com.ming.tools.generate.annotation.NotNull;
-import com.ming.tools.generate.annotation.PrimaryKey;
-import com.ming.tools.generate.annotation.Text;
-import com.ming.tools.generate.enums.ColumnType;
+import com.ming.tools.generate.old.annotation.Column;
+import com.ming.tools.generate.old.annotation.Comment;
+import com.ming.tools.generate.old.annotation.Description;
+import com.ming.tools.generate.old.annotation.GenerateMybatis;
+import com.ming.tools.generate.old.annotation.NotNull;
+import com.ming.tools.generate.old.annotation.PrimaryKey;
+import com.ming.tools.generate.old.annotation.Text;
+import com.ming.tools.generate.old.enums.ColumnType;
 
 import java.util.Date;
 
