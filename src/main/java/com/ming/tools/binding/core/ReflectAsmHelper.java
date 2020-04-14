@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Created by Administrator on 2020/3/18 0018.
  */
-public class ReflectAsmManager {
+public class ReflectAsmHelper {
     private static final ConcurrentMap<Class, MethodAccess> localCache = new ConcurrentHashMap<Class, MethodAccess>();
 
     public static MethodAccess get(Class clazz) {

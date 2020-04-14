@@ -33,10 +33,10 @@ public class JDBCTypesUtils {
             }
         }
         // 初始化jdbcJavaTypes：
-        jdbcJavaTypes.put(new Integer(Types.LONGNVARCHAR), String.class);  // -16 字符串
-        jdbcJavaTypes.put(new Integer(Types.NCHAR), String.class);    // -15 字符串
-        jdbcJavaTypes.put(new Integer(Types.NVARCHAR), String.class);   // -9 字符串
-        jdbcJavaTypes.put(new Integer(Types.ROWID), String.class);    // -8 字符串
+        //jdbcJavaTypes.put(new Integer(Types.LONGNVARCHAR), String.class);  // -16 字符串
+        //jdbcJavaTypes.put(new Integer(Types.NCHAR), String.class);    // -15 字符串
+        //jdbcJavaTypes.put(new Integer(Types.NVARCHAR), String.class);   // -9 字符串
+        //jdbcJavaTypes.put(new Integer(Types.ROWID), String.class);    // -8 字符串
         jdbcJavaTypes.put(new Integer(Types.BIT), Boolean.class);    // -7 布尔
         jdbcJavaTypes.put(new Integer(Types.TINYINT), Byte.class);    // -6 数字
         jdbcJavaTypes.put(new Integer(Types.BIGINT), Long.class);    // -5 数字
@@ -68,7 +68,7 @@ public class JDBCTypesUtils {
         jdbcJavaTypes.put(new Integer(Types.CLOB), Clob.class);    // 2005 大文本
         //  jdbcJavaTypes.put(new Integer(Types.REF), String.class);    // 2006
         //  jdbcJavaTypes.put(new Integer(Types.SQLXML), String.class);   // 2009
-        jdbcJavaTypes.put(new Integer(Types.NCLOB), Clob.class);    // 2011 大文本
+        //jdbcJavaTypes.put(new Integer(Types.NCLOB), Clob.class);    // 2011 大文本
     }
 
     public static int getJdbcCode(String jdbcName) {

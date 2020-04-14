@@ -1,0 +1,9 @@
+${package}
+
+${import}
+
+${classComment}
+public class ${voName} extends ${className} {
+
+}
+

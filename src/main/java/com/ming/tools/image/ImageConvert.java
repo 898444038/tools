@@ -2,9 +2,9 @@ package com.ming.tools.image;
 
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
-import com.madgag.gif.fmsware.GifDecoder;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+//import com.madgag.gif.fmsware.GifDecoder;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -36,7 +36,7 @@ public class ImageConvert {
         e.finish();
     }
 
-    private static void gifTojpg() throws IOException {
+    /*private static void gifTojpg() throws IOException {
         GifDecoder decoder = new GifDecoder();
         InputStream is = new FileInputStream("d:/123.gif");
         if (decoder.read(is) != 0) {
@@ -55,5 +55,5 @@ public class ImageConvert {
             out.flush();
             out.close();
         }
-    }
+    }*/
 }

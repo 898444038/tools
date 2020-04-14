@@ -1,0 +1,293 @@
+package com.ming.tools.word;
+
+import org.apdplat.qa.SharedQuestionAnsweringSystem;
+import org.apdplat.qa.model.CandidateAnswer;
+import org.apdplat.qa.model.Question;
+import org.apdplat.word.WordFrequencyStatistics;
+import org.apdplat.word.WordSegmenter;
+import org.apdplat.word.analysis.CosineTextSimilarity;
+import org.apdplat.word.analysis.TextSimilarity;
+import org.apdplat.word.dictionary.DictionaryFactory;
+import org.apdplat.word.lucene.ChineseWordAnalyzer;
+import org.apdplat.word.segmentation.SegmentationAlgorithm;
+import org.apdplat.word.segmentation.Word;
+import org.apdplat.word.segmentation.WordRefiner;
+import org.apdplat.word.tagging.AntonymTagging;
+import org.apdplat.word.tagging.PartOfSpeechTagging;
+import org.apdplat.word.tagging.PinyinTagging;
+import org.apdplat.word.tagging.SynonymTagging;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * https://github.com/ysc/word
+ */
+public class WordTest {
+
+    public static void main(String[] args) throws Exception {
+        String questionStr = "QuestionAnsweringSystem是一个Java实现的人机问答系统，能够自动分析问题并给出候选答案。";
+        /*Question question = SharedQuestionAnsweringSystem.getInstance().answerQuestion(questionStr);
+        if (question != null) {
+            List<CandidateAnswer> candidateAnswers = question.getAllCandidateAnswer();
+            int i=1;
+            for(CandidateAnswer candidateAnswer : candidateAnswers){
+                System.out.println((i++)+"、"+candidateAnswer.getAnswer()+":"+candidateAnswer.getScore());
+            }
+        }*/
+
+        //移除停用词进行分词
+        List<Word> list = WordSegmenter.seg(questionStr);
+        //保留停用词
+        List<Word> lists = WordSegmenter.segWithStopWords(questionStr);
+        System.out.println(list);
+        System.out.println(lists);
+        lists = WordRefiner.refine(lists);
+
+//        WordTest.textSeg("word分词是一个Java实现的中文分词组件");
+//        WordTest.fileSeg();
+    }
+
+    //对文本进行分词
+    public static void textSeg(String title) {
+        //移除停用词进行分词
+        List<Word> list = WordSegmenter.seg(title);
+        //保留停用词
+        List<Word> lists = WordSegmenter.segWithStopWords(title);
+        System.out.println(list);
+        System.out.println(lists);
+
+        //词性标注
+        PartOfSpeechTagging.process(list);
+        System.out.println("标注词性："+list);
+
+        //拼音标注
+        PinyinTagging.process(list);
+        System.out.println("拼音词性："+list);
+        //可以通过Word的getFullPinYin()方法获取完整拼音如：sudu
+        list.get(0).getFullPinYin();
+        //可以通过Word的getAcronymPinYin()方法获取首字母缩略拼音如：sd
+        list.get(0).getAcronymPinYin();
+
+
+        //通过在word.refine.path配置项指定的文件classpath:word_refine.txt中增加以下内容：
+        //细分: 工人阶级=工人 阶级
+        //合并: 伟大 征程=伟大征程
+        list = WordRefiner.refine(list);
+
+        List<Word> words = null;
+        //同义标注
+        words = WordSegmenter.segWithStopWords("楚离陌千方百计为无情找回记忆");
+        System.out.println(words);//[楚离陌, 千方百计, 为, 无情, 找回, 记忆]
+        SynonymTagging.process(words);//[楚离陌, 千方百计[久有存心, 化尽心血, 想方设法, 费尽心机], 为, 无情, 找回, 记忆[影象]]
+        //间接同义词
+        SynonymTagging.process(words, false);//[楚离陌, 千方百计[久有存心, 化尽心血, 想方设法, 费尽心机], 为, 无情, 找回, 记忆[影像, 影象]]
+        //获取同义词
+        for (Word word : words){
+            word.getSynonym();
+        }
+
+        //反义标注
+        words = WordSegmenter.segWithStopWords("5月初有哪些电影值得观看");
+        System.out.println(words);//[5, 月初, 有, 哪些, 电影, 值得, 观看]
+        AntonymTagging.process(words);//[5, 月初[月底, 月末, 月终], 有, 哪些, 电影, 值得, 观看]
+        //获取反义词
+        for (Word word : words){
+            word.getAntonym();
+        }
+    }
+
+    //对文件进行分词
+    public static void fileSeg() throws Exception{
+        String input = "d:/text.txt";
+        String output = "d:/word.txt";
+        //移除停用词：
+        WordSegmenter.seg(new File(input), new File(output));
+        //保留停用词：
+        WordSegmenter.segWithStopWords(new File(input), new File(output));
+    }
+
+    //词频统计
+    public void count()throws Exception{
+        //命令行脚本的调用方法如下：
+        //将需要统计词频的文本写入文件：text.txt
+        //chmod +x wfs.sh & wfs.sh -textFile=text.txt -statisticsResultFile=statistics-result.txt
+        //程序运行结束后打开文件statistics-result.txt查看词频统计结果
+
+        //在程序中的调用方法如下：
+
+        //词频统计设置
+        WordFrequencyStatistics wordFrequencyStatistics = new WordFrequencyStatistics();
+        wordFrequencyStatistics.setRemoveStopWord(false);
+        wordFrequencyStatistics.setResultPath("word-frequency-statistics.txt");
+        wordFrequencyStatistics.setSegmentationAlgorithm(SegmentationAlgorithm.MaxNgramScore);
+        //开始分词
+        wordFrequencyStatistics.seg("明天下雨，结合成分子，明天有关于分子和原子的课程，下雨了也要去听课");
+        //输出词频统计结果
+        wordFrequencyStatistics.dump();
+        //准备文件
+        Files.write(Paths.get("text-to-seg.txt"), Arrays.asList("word分词是一个Java实现的分布式中文分词组件，提供了多种基于词典的分词算法，并利用ngram模型来消除歧义。"));
+        //清除之前的统计结果
+        wordFrequencyStatistics.reset();
+        //对文件进行分词
+        wordFrequencyStatistics.seg(new File("text-to-seg.txt"), new File("text-seg-result.txt"));
+        //输出词频统计结果
+        wordFrequencyStatistics.dump("file-seg-statistics-result.txt");
+    }
+
+    //自定义配置文件
+    public void customConfig(){
+        //默认配置文件为类路径下的word.conf，打包在word-x.x.jar中
+        //自定义配置文件为类路径下的word.local.conf，需要用户自己提供
+        //如果自定义配置和默认配置相同，自定义配置会覆盖默认配置
+        //配置文件编码为UTF-8
+    }
+
+    /**
+     * 指定方式一，编程指定（高优先级）：
+     WordConfTools.set("dic.path", "classpath:dic.txt，d:/custom_dic");
+     DictionaryFactory.reload();//更改词典路径之后，重新加载词典
+     指定方式二，Java虚拟机启动参数（中优先级）：
+     java -Ddic.path=classpath:dic.txt，d:/custom_dic
+     指定方式三，配置文件指定（低优先级）：
+     使用类路径下的文件word.local.conf来指定配置信息
+     dic.path=classpath:dic.txt，d:/custom_dic
+     如未指定，则默认使用类路径下的dic.txt词典文件
+     */
+    //自定义用户词库
+    public void customLexicon(){
+        // 单个操作
+        // 添加一个自定义词
+        DictionaryFactory.getDictionary().add("杨尚川");
+        // 删除一个自定义词
+        DictionaryFactory.getDictionary().remove("刘诗诗");
+        // 批量操作
+        List<String> words = new ArrayList<String>();
+        words.add("刘德华");
+        words.add("景甜");
+        words.add("赵丽颖");
+        // 添加一批自定义词
+        DictionaryFactory.getDictionary().addAll(words);
+        // 删除一批自定义词
+        DictionaryFactory.getDictionary().removeAll(words);
+    }
+
+    //自定义停用词词库
+    public void customStopLexicon(){
+        //使用方式和自定义用户词库类似，配置项为：
+        //stopwords.path=classpath:stopwords.txt，d:/custom_stopwords_dic
+    }
+
+    //自动检测词库变化
+    public void autoLexiconChange(){
+        //可以自动检测自定义用户词库和自定义停用词词库的变化
+        //包含类路径下的文件和文件夹、非类路径下的绝对路径和相对路径
+        //如：
+        //classpath:dic.txt，classpath:custom_dic_dir,
+        //        d:/dic_more.txt，d:/DIC_DIR，D:/DIC2_DIR，my_dic_dir，my_dic_file.txt
+
+        //classpath:stopwords.txt，classpath:custom_stopwords_dic_dir，
+        //d:/stopwords_more.txt，d:/STOPWORDS_DIR，d:/STOPWORDS2_DIR，stopwords_dir，remove.txt
+    }
+
+    //显式指定分词算法
+    public void algorithm(){
+        //对文本进行分词时，可显式指定特定的分词算法，如：
+        String str = "APDPlat应用级产品开发平台";
+        //正向最大匹配算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.MaximumMatching);
+        //逆向最大匹配算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.ReverseMaximumMatching);
+        //正向最小匹配算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.MinimumMatching);
+        //逆向最小匹配算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.ReverseMinimumMatching);
+        //双向最大匹配算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.BidirectionalMaximumMatching);
+        //双向最小匹配算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.BidirectionalMinimumMatching);
+        //双向最大最小匹配算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.BidirectionalMaximumMinimumMatching);
+        //全切分算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.FullSegmentation);
+        //最少词数算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.MinimalWordCount);
+        //最大Ngram分值算法
+        WordSegmenter.seg(str, SegmentationAlgorithm.MaxNgramScore);
+    }
+
+    //evaluation.bat 分词效果评估
+    /**
+     * 运行项目根目录下的脚本evaluation.bat可以对分词效果进行评估
+     评估采用的测试文本有253 3709行，共2837 4490个字符
+     评估结果位于target/evaluation目录下：
+     corpus-text.txt为分好词的人工标注文本，词之间以空格分隔
+     test-text.txt为测试文本，是把corpus-text.txt以标点符号分隔为多行的结果
+     standard-text.txt为测试文本对应的人工标注文本，作为分词是否正确的标准
+     result-text-***.txt，***为各种分词算法名称，这是word分词结果
+     perfect-result-***.txt，***为各种分词算法名称，这是分词结果和人工标注标准完全一致的文本
+     wrong-result-***.txt，***为各种分词算法名称，这是分词结果和人工标注标准不一致的文本
+
+
+     evaluation.bat内容：
+     @echo off
+     call mvn -Dmaven.test.skip clean install dependency:copy-dependencies
+     set JAVA_OPTS=-Xms1200m -Xmx1200m
+     set CLASS_PATH=target/classes;target/dependency/slf4j-api-1.6.4.jar;target/dependency/logback-classic-0.9.28.jar;target/dependency/logback-core-0.9.28.jar
+     set EXECUTOR=java %JAVA_OPTS% -cp %CLASS_PATH%
+     call %EXECUTOR% org.apdplat.word.corpus.Evaluation
+     */
+
+
+    //分布式中文分词器
+    /*
+    1、在自定义配置文件word.conf或word.local.conf中指定所有的配置项*.path使用HTTP资源，同时指定配置项redis.*
+
+    #词典
+    dic.path=http://localhost:8080/word_web/resources/dic.txt
+    #词性标注数据
+    part.of.speech.dic.path=http://localhost:8080/word_web/resources/part_of_speech_dic.txt
+    #词性说明数据
+    part.of.speech.des.path=http://localhost:8080/word_web/resources/part_of_speech_des.txt
+    #二元模型
+    bigram.path=http://localhost:8080/word_web/resources/bigram.txt
+    #三元模型
+    trigram.path=http://localhost:8080/word_web/resources/trigram.txt
+    #停用词词典
+    stopwords.path=http://localhost:8080/word_web/resources/stopwords.txt
+    #用于分割词的标点符号
+    punctuation.path=http://localhost:8080/word_web/resources/punctuation.txt
+    #百家姓
+    surname.path=http://localhost:8080/word_web/resources/surname.txt
+    #数量词
+    quantifier.path=http://localhost:8080/word_web/resources/quantifier.txt
+
+    #是否使用redis的发布订阅服务来实时检测HTTP资源变更
+    redis.enable=false
+    #redis服务，用于实时检测HTTP资源变更
+    #redis主机
+    redis.host=localhost
+    #redis端口
+    redis.port=6379
+
+2、配置并启动redis服务器
+
+    所有的分词器都会订阅redis服务器, 当redis服务器收到用户对资源的新增或删除指令后, 会通知所有的分词器进行相应的操作
+
+3、配置并启动提供HTTP资源的web服务器，即将项目：https://github.com/ysc/word_web 部署到tomcat的8080端口
+
+    // 通知所有的分词器增加"杨尚川"这个词
+    http://localhost:8080/word_web/admin/dic.jsp?action=add&dic=杨尚川
+    // 通知所有的分词器删除"笔记本"这个词
+    http://localhost:8080/word_web/admin/dic.jsp?action=remove&dic=笔记本
+
+    dic.jsp收到用户的请求后会将消息投递到redis服务器, redis服务器在发布消息给所有订阅的分词器
+     */
+
+
+
+}

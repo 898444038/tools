@@ -11,4 +11,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PrimaryKey {
+
+    // 约束，这里可以使用其他注解类型。
+    Constraints constraints() default @Constraints;
 }

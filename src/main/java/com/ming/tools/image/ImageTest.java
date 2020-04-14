@@ -13,14 +13,15 @@ import java.util.List;
 public class ImageTest {
 
     public static void main(String[] args) {
+        System.out.println("生成GIF开始...");
         Font font = new Font("微软雅黑", Font.PLAIN, 12);                     //水印字体
         String srcImgPath="E:\\mine2\\tools\\src\\main\\resources\\static\\jpgs\\"; //源图片地址
         String tarImgPath="C:\\Users\\Administrator\\Desktop\\"+System.currentTimeMillis()+".jpg"; //待存储的地址
         String gifPath="C:\\Users\\Administrator\\Desktop\\"+System.currentTimeMillis()+".gif"; //待存储的地址
         java.util.List<ImageContent> contentList = new ArrayList<ImageContent>();
-        contentList.add(new ImageContent(0,29,"你是不是说要出气功第三系?"));
-        contentList.add(new ImageContent(30,48,"是啊 怎么了?"));
-        contentList.add(new ImageContent(49,72,"出你妈 都过多长时间了"));
+        contentList.add(new ImageContent(0,29,"你是不是觉得别人都跟你一样脸黑"));
+        contentList.add(new ImageContent(30,48,"是啊 怎么了"));
+        contentList.add(new ImageContent(49,72,"是你妹 就你最黑"));
 
         Color color=new Color(255,255,255,128);                               //水印图片色彩以及透明度
         //new WaterMarkUtils().addWaterMark(srcImgPath, tarImgPath,waterMarkContent,color,font);

@@ -5,7 +5,7 @@ import com.ming.tools.binding.anno.Bind;
 import com.ming.tools.binding.anno.PrimaryKey;
 import com.ming.tools.binding.bean.BeanInfo;
 import com.ming.tools.binding.bean.ChangeInfo;
-import com.ming.tools.binding.core.ReflectAsmManager;
+import com.ming.tools.binding.core.ReflectAsmHelper;
 import com.ming.tools.binding.store.cache.EasyCacheUtil;
 import com.ming.tools.binding.utils.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -61,14 +61,16 @@ public class BindAspect {
                     primaryKeyName = field.getName();
                     field.setAccessible(true);
                     // 获取属性的对应的值
-                    ObjectHashCode = Integer.valueOf(field.get(target).toString());
+                    if(field.get(target)!=null){
+                        ObjectHashCode = Integer.valueOf(field.get(target).toString());
+                    }
                 }
             }
             Map<Integer,BeanInfo> map = EasyCacheUtil.getT(classHashCode.toString());
             if(map==null){
                 map = new HashMap<Integer, BeanInfo>();
                 Object newObj = target.getClass().newInstance();
-                ReflectAsmManager.copyProperties(target,newObj,propertyName);
+                ReflectAsmHelper.copyProperties(target,newObj,propertyName);
                 BeanInfo beanInfo = new BeanInfo();
                 Map<String,Boolean> changeMap = new HashMap<String, Boolean>();
                 changeMap.put(propertyName,true);
@@ -93,7 +95,7 @@ public class BindAspect {
                             System.out.println(propertyName+"不变");
                         }else{
                             System.out.println(propertyName+"修改");
-                            ReflectAsmManager.copyProperties(target,obj,propertyName);
+                            ReflectAsmHelper.copyProperties(target,obj,propertyName);
                             BeanInfo beanInfo = new BeanInfo();
                             beanInfo.setObj(obj);
                             changeMap.put(propertyName,true);
@@ -103,7 +105,7 @@ public class BindAspect {
                         }
                     }else{
                         System.out.println(propertyName+"保存");
-                        ReflectAsmManager.copyProperties(target,obj,propertyName);
+                        ReflectAsmHelper.copyProperties(target,obj,propertyName);
                         BeanInfo beanInfo = new BeanInfo();
                         beanInfo.setObj(obj);
                         changeMap.put(propertyName,true);

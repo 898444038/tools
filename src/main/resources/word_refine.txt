@@ -1,0 +1,2 @@
+自动 分析=自动分析
+Q u e s t i o n A n s w e r i n g y s t e m=QuestionAnsweringSystem

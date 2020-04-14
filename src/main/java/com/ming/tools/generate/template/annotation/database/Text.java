@@ -1,4 +1,4 @@
-package com.ming.tools.binding.anno;
+package com.ming.tools.generate.template.annotation.database;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,9 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by Administrator on 2020/3/18 0018.
+ * Created by Administrator on 2020/1/6 0006.
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UnBindMethod {
+public @interface Text {
+
 }
