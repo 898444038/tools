@@ -16,6 +16,8 @@ public @interface Generate {
 
     boolean isCover() default false;//是否覆盖
 
+    boolean isLog() default false;//是否打印日志
+
     String baseUrl() default "";//基础路径
 
     String desc() default "";//描述

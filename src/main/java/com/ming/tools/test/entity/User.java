@@ -1,7 +1,6 @@
 package com.ming.tools.test.entity;
 
 import com.ming.tools.generate.old.annotation.Column;
-import com.ming.tools.generate.old.annotation.Comment;
 import com.ming.tools.generate.old.annotation.Description;
 import com.ming.tools.generate.old.annotation.GenerateMybatis;
 import com.ming.tools.generate.old.annotation.NotNull;
@@ -20,11 +19,11 @@ public class User {
 
     @Column
     @PrimaryKey
-    @Comment("主键")
+    //@Comment("主键")
     private Long id;
 
     @NotNull
-    @Comment("用户名")
+    //@Comment("用户名")
     @Column(name = "user_name",type = ColumnType.VARCHAR,length = 32)
     private String username;
 

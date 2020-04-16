@@ -77,6 +77,8 @@ public class ScannerAnno {
                             info.setGenerateSql(true);
                         }
 
+                        info.setIsLog(generate.isLog());
+
                         if(generate.isCover()){
                             info.setCoverVo(generate.isCover());
                             info.setCoverController(generate.isCover());

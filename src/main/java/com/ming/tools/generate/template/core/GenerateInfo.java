@@ -33,6 +33,9 @@ public class GenerateInfo {
     private Boolean coverMapperXml = false;
     private Boolean coverSql = false;
 
+    //是否打印日志
+    private Boolean isLog = false;
+
     private String basePackage;
     private String baseUrl;
 
@@ -70,6 +73,14 @@ public class GenerateInfo {
     private List<FieldColumn> fieldColumnList;
 
     public GenerateInfo() {
+    }
+
+    public Boolean getIsLog() {
+        return isLog;
+    }
+
+    public void setIsLog(Boolean isLog) {
+        this.isLog = isLog;
     }
 
     public Boolean getCoverVo() {

@@ -23,7 +23,7 @@ public class GenerateHelper {
             Map<Integer,String> map = ReadTemplateHelper.getInstance().readTxtFile(GenerateConfig.getVoTemplatePath());
             if (!map.isEmpty()) {
                 handle(map, info, GenerateConfig.getVoSrcPath());
-                WriteTemplateHelper.writeSrc(info.getVoSrcPath(), info.getVoSuffix(), map ,info.getCoverVo());
+                WriteTemplateHelper.writeSrc(info.getVoSrcPath(), info.getVoSuffix(), map ,info.getCoverVo(),info);
             }
         }
     }
@@ -33,7 +33,7 @@ public class GenerateHelper {
             Map<Integer,String> map = ReadTemplateHelper.getInstance().readTxtFile(GenerateConfig.getControllerTemplatePath());
             if (!map.isEmpty()) {
                 handle(map, info, GenerateConfig.getControllerSrcPath());
-                WriteTemplateHelper.writeSrc(info.getControllerSrcPath(), info.getControllerSuffix(), map ,info.getCoverController());
+                WriteTemplateHelper.writeSrc(info.getControllerSrcPath(), info.getControllerSuffix(), map ,info.getCoverController(),info);
             }
         }
     }
@@ -43,7 +43,7 @@ public class GenerateHelper {
             Map<Integer,String> map = ReadTemplateHelper.getInstance().readTxtFile(GenerateConfig.getServiceTemplatePath());
             if (!map.isEmpty()) {
                 handle(map, info, GenerateConfig.getServiceSrcPath());
-                WriteTemplateHelper.writeSrc(info.getServiceSrcPath(), info.getServiceSuffix(), map ,info.getCoverService());
+                WriteTemplateHelper.writeSrc(info.getServiceSrcPath(), info.getServiceSuffix(), map ,info.getCoverService(),info);
             }
         }
     }
@@ -53,7 +53,7 @@ public class GenerateHelper {
             Map<Integer,String> map = ReadTemplateHelper.getInstance().readTxtFile(GenerateConfig.getServiceImplTemplatePath());
             if (!map.isEmpty()) {
                 handle(map, info, GenerateConfig.getServiceImplSrcPath());
-                WriteTemplateHelper.writeSrc(info.getServiceImplSrcPath(), info.getServiceImplSuffix(), map ,info.getCoverServiceImpl());
+                WriteTemplateHelper.writeSrc(info.getServiceImplSrcPath(), info.getServiceImplSuffix(), map ,info.getCoverServiceImpl(),info);
             }
         }
     }
@@ -63,7 +63,7 @@ public class GenerateHelper {
             Map<Integer,String> map = ReadTemplateHelper.getInstance().readTxtFile(GenerateConfig.getMapperTemplatePath());
             if (!map.isEmpty()) {
                 handle(map, info, GenerateConfig.getMapperSrcPath());
-                WriteTemplateHelper.writeSrc(info.getMapperSrcPath(), info.getMapperSuffix(), map ,info.getCoverMapper());
+                WriteTemplateHelper.writeSrc(info.getMapperSrcPath(), info.getMapperSuffix(), map ,info.getCoverMapper(),info);
             }
         }
     }
@@ -77,7 +77,7 @@ public class GenerateHelper {
                     info.setFieldColumnList(fieldColumnList);
                 }
                 handle(map,info,GenerateConfig.getMapperXmlSrcPath());
-                WriteTemplateHelper.writeResource(info.getMapperXmlSrcPath(), info.getMapperXmlSuffix(),map ,info.getCoverMapperXml());
+                WriteTemplateHelper.writeResource(info.getMapperXmlSrcPath(), info.getMapperXmlSuffix(),map ,info.getCoverMapperXml(),info);
             }
         }
     }
@@ -114,7 +114,7 @@ public class GenerateHelper {
             gs.append(")").append("ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8").appendSRN();
             Map<Integer,String> map = new HashMap<Integer, String>();
             map.put(0,gs.toString());
-            WriteTemplateHelper.writeResource(info.getSqlSrcPath(), info.getSqlSuffix(),map ,info.getCoverSql());
+            WriteTemplateHelper.writeResource(info.getSqlSrcPath(), info.getSqlSuffix(),map ,info.getCoverSql(),info);
         }
     }
 

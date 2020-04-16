@@ -30,15 +30,15 @@ public class WriteTemplateHelper {
         return absolutePath+mavenPath+packagePath;
     }
 
-    public static void writeSrc(String fileName,String suffix,Map<Integer,String> map,Boolean isCover) {
+    public static void writeSrc(String fileName,String suffix,Map<Integer,String> map,Boolean isCover,GenerateInfo info) {
         String filePath = getAbsolutePath(fileName,0) + suffix;
-        String filedo = fileLinesWrite(filePath,map,false,isCover);
+        String filedo = fileLinesWrite(filePath,map,false,isCover,info.getIsLog());
         System.out.println(filedo+" ["+filePath + "] success!");
     }
 
-    public static void writeResource(String fileName, String suffix, Map<Integer, String> map,Boolean isCover) {
+    public static void writeResource(String fileName, String suffix, Map<Integer, String> map,Boolean isCover,GenerateInfo info) {
         String filePath = getAbsolutePath(fileName,1) + suffix;
-        String filedo = fileLinesWrite(filePath,map,false,isCover);
+        String filedo = fileLinesWrite(filePath,map,false,isCover,info.getIsLog());
         System.out.println(filedo+" ["+filePath + "] success!");
     }
 
@@ -49,7 +49,7 @@ public class WriteTemplateHelper {
      * @param flag true:如果文件存在且存在内容，则内容换行追加；false:如果文件存在且存在内容，则内容替换
      * @param isCover true:覆盖
      */
-    public static String fileLinesWrite(String filePath,Map<Integer,String> map,boolean flag,boolean isCover){
+    public static String fileLinesWrite(String filePath,Map<Integer,String> map,boolean flag,boolean isCover,boolean isLog){
         String filedo = "write";
         FileWriter fw = null;
         PrintWriter pw = null;
@@ -69,6 +69,7 @@ public class WriteTemplateHelper {
                     filedo+="[覆盖]";
                     fw = new FileWriter(file, flag);
                 }else{
+                    filedo+="[跳过]";
                     return filedo;
                 }
             }
@@ -76,7 +77,9 @@ public class WriteTemplateHelper {
             for (Map.Entry<Integer,String> entry : map.entrySet()){
                 pw.println(entry.getValue());
             }
-            GenerateHelper.foreachMap(map);
+            if(isLog){
+                GenerateHelper.foreachMap(map);
+            }
             pw.flush();
             fw.flush();
         } catch (IOException e) {

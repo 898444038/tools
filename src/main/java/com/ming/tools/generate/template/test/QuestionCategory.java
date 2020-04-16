@@ -11,7 +11,7 @@ import java.util.Date;
  * 问题分类
  * Created by Administrator on 2020/4/13 0013.
  */
-@Generate(desc = "问题分类")
+@Generate(isEffective = false,desc = "问题分类")
 public class QuestionCategory {
 
     @Column
