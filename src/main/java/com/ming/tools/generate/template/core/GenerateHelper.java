@@ -92,10 +92,17 @@ public class GenerateHelper {
 
             String tableName = info.getTableName();
             GenerateString gs = GenerateString.build();
+            GenerateString gsAdd = GenerateString.build();
             gs.append("CREATE TABLE `").append(tableName).append("` (").appendRN();
             for(FieldColumn field : fieldColumnList){
                 gs.append("`"+field.getFieldColumn()+"` ").append(field.getJdbcType())
                         .append(field.getLength()+" ");
+
+                gsAdd.append("ALTER TABLE `").append(tableName).append("` ")
+                        .append("ADD COLUMN ").append(field.getFieldColumn())
+                        .append(" ").append(field.getJdbcType()).append(field.getLength())
+                        .append(" ").append(" DEFAULT NULL ");
+
                 if(field.getPrimaryKey()){
                     gs.append(" NOT NULL AUTO_INCREMENT ");
                 }else{
@@ -103,8 +110,10 @@ public class GenerateHelper {
                 }
                 if(field.getComment()!=null){
                     gs.append(" COMMENT '").append(field.getComment()).append("'");
+                    gsAdd.append(" COMMENT '").append(field.getComment()).append("'");
                 }
                 gs.append(",").appendRN();
+                gsAdd.appendSRN();
             }
             for(FieldColumn field : fieldColumnList) {
                 if(field.getPrimaryKey()){
@@ -113,7 +122,10 @@ public class GenerateHelper {
             }
             gs.append(")").append("ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8").appendSRN();
             Map<Integer,String> map = new HashMap<Integer, String>();
-            map.put(0,gs.toString());
+            map.put(0,"-- 建表语句");
+            map.put(1,gs.toString());
+            map.put(2,"-- 新增字段");
+            map.put(3,gsAdd.toString());
             WriteTemplateHelper.writeResource(info.getSqlSrcPath(), info.getSqlSuffix(),map ,info.getCoverSql(),info);
         }
     }
