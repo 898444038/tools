@@ -104,11 +104,16 @@ public class ScannerAnno {
                         info.setClassName(className);
                         info.setLowerClassName(lowerClassName);
 
+                        String tablePrefix = generate.tablePrefix();
+                        if(!GenerateUtil.isBlank(tablePrefix)){
+                            tablePrefix = tablePrefix+"_";
+                        }
+
                         String tableName = generate.tableName();
                         if(GenerateUtil.isBlank(tableName)){
                             tableName = GenerateUtil.humpToLine2(className);
                         }
-                        info.setTableName(tableName);
+                        info.setTableName(tablePrefix+tableName);
 
                         String classMapping = generate.classMapping();
                         if(GenerateUtil.isBlank(classMapping)){

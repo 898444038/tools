@@ -12,18 +12,52 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Generate {
 
-    boolean isEffective() default true;//是否生效
+    /**
+     * 代码生成是否生效
+     * @return
+     */
+    boolean isEffective() default true;
 
-    boolean isCover() default false;//是否覆盖
+    /**
+     * 是否覆盖
+     * @return
+     */
+    boolean isCover() default false;
 
-    boolean isLog() default false;//是否打印日志
+    /**
+     * 是否打印生成文件的内容
+     * @return
+     */
+    boolean isLog() default false;
 
-    String baseUrl() default "";//基础路径
+    /**
+     * 生成基础路径（包路径下）
+     * @return
+     */
+    String baseUrl() default "";
 
-    String desc() default "";//描述
+    /**
+     * 生成文件描述
+     * @return
+     */
+    String desc() default "";
 
-    String tableName() default "";//表名
+    /**
+     * 表前缀
+     * @return
+     */
+    String tablePrefix() default "";
 
-    String classMapping() default "";//请求类路径
+    /**
+     * 表名
+     * @return
+     */
+    String tableName() default "";
+
+    /**
+     * 请求类路径
+     * @return
+     */
+    String classMapping() default "";
 
 }
