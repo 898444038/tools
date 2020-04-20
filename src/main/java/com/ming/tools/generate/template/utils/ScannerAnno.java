@@ -125,6 +125,7 @@ public class ScannerAnno {
                         info.setBaseUrl(baseUrl);
 
                         info.setBasePackage(packageName);
+                        info.setModuleName(generate.moduleName());
 
                         name = GenerateUtil.firstUpperCase(GenerateConfig.getControllerSrcPath());
                         info.setControllerName(className + name);

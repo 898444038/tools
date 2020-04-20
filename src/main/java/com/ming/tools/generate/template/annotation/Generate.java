@@ -60,4 +60,9 @@ public @interface Generate {
      */
     String classMapping() default "";
 
+    /**
+     * 模块名
+     * @return
+     */
+    String moduleName() default "";
 }

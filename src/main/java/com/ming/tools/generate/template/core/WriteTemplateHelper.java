@@ -1,5 +1,7 @@
 package com.ming.tools.generate.template.core;
 
+import com.ming.tools.generate.template.utils.GenerateUtil;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,33 +13,34 @@ import java.util.Map;
  */
 public class WriteTemplateHelper {
 
-    //E:\mine2\tools\src\main\java\com\ming\tools\generate\template\test\QuestionCategory.java
-    public static void main(String[] args) {
+    private static final String mavenJavaPath = "src\\main\\java\\";
+    private static final String mavenResourcesPath = "src\\main\\resources\\";
 
-    }
-
-    public static String getAbsolutePath(String fileName,Integer type) {
+    public static String getAbsolutePath(String fileName,String moduleName,Integer type) {
         File f = new File(".");
         String absolutePath = f.getAbsolutePath();
         absolutePath = absolutePath.substring(0,absolutePath.length()-1);
         String mavenPath = "";
+        if(GenerateUtil.isNotBlank(moduleName)){
+            mavenPath += (moduleName+"\\");
+        }
         if(type == 0){
-            mavenPath = "src\\main\\java\\";
+            mavenPath += mavenJavaPath;
         }else{
-            mavenPath = "src\\main\\resources\\";
+            mavenPath += mavenResourcesPath;
         }
         String packagePath = fileName.replaceAll("\\.","\\\\");
         return absolutePath+mavenPath+packagePath;
     }
 
     public static void writeSrc(String fileName,String suffix,Map<Integer,String> map,Boolean isCover,GenerateInfo info) {
-        String filePath = getAbsolutePath(fileName,0) + suffix;
+        String filePath = getAbsolutePath(fileName,info.getModuleName(),0) + suffix;
         String filedo = fileLinesWrite(filePath,map,false,isCover,info.getIsLog());
         System.out.println(filedo+" ["+filePath + "] success!");
     }
 
     public static void writeResource(String fileName, String suffix, Map<Integer, String> map,Boolean isCover,GenerateInfo info) {
-        String filePath = getAbsolutePath(fileName,1) + suffix;
+        String filePath = getAbsolutePath(fileName,info.getModuleName(),1) + suffix;
         String filedo = fileLinesWrite(filePath,map,false,isCover,info.getIsLog());
         System.out.println(filedo+" ["+filePath + "] success!");
     }

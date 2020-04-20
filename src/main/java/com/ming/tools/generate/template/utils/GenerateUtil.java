@@ -31,6 +31,10 @@ public class GenerateUtil {
         }
     }
 
+    public static boolean isNotBlank(String str) {
+        return !isBlank(str);
+    }
+
     //获取类名，不带包名
     public static String getClassName(Class clazz){
         String name = clazz.getName();
