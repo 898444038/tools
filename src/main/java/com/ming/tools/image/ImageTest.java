@@ -4,8 +4,7 @@ import com.madgag.gif.fmsware.AnimatedGifEncoder;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2020/3/30 0030.
@@ -14,16 +13,16 @@ public class ImageTest {
 
     public static void main(String[] args) {
         System.out.println("生成GIF开始...");
-        Font font = new Font("微软雅黑", Font.PLAIN, 12);                     //水印字体
-        String srcImgPath="E:\\mine2\\tools\\src\\main\\resources\\static\\jpgs\\"; //源图片地址
+        Font font = new Font("微软雅黑", Font.BOLD, 16);//水印字体
+        String srcImgPath="E:\\mine2\\tools\\src\\main\\resources\\static\\jpgs2\\"; //源图片地址
         String tarImgPath="C:\\Users\\Administrator\\Desktop\\"+System.currentTimeMillis()+".jpg"; //待存储的地址
         String gifPath="C:\\Users\\Administrator\\Desktop\\"+System.currentTimeMillis()+".gif"; //待存储的地址
         java.util.List<ImageContent> contentList = new ArrayList<ImageContent>();
-        contentList.add(new ImageContent(0,29,"你是不是觉得别人都跟你一样脸黑"));
-        contentList.add(new ImageContent(30,48,"是啊 怎么了"));
-        contentList.add(new ImageContent(49,72,"是你妹 就你最黑"));
+        contentList.add(new ImageContent(0,29,"你是不是说晚上打游戏"));
+        contentList.add(new ImageContent(30,48,"是啊 怎么了?"));
+        contentList.add(new ImageContent(49,72,"打你妈游戏 十一点了不见你上线"));
 
-        Color color=new Color(255,255,255,128);                               //水印图片色彩以及透明度
+        Color color = new Color(255,255,255,255);                               //水印图片色彩以及透明度
         //new WaterMarkUtils().addWaterMark(srcImgPath, tarImgPath,waterMarkContent,color,font);
 
         java.util.List<BufferedImage> imageList = new ArrayList<BufferedImage>();
