@@ -13,6 +13,8 @@ public class ObjectPoolTest {
         user.setId(6L);
 //        user.setUsername("zhangsan");
         ObjectPool.getInstance().binding(user);
+
+
         user.setAge(27);
         ObjectPool.getInstance().change();
         user.setDelFlag(true);
